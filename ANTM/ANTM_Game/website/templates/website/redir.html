@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}You've Selected {% endblock %}
+
+{% block content %}
+
+<a href = "{% url 'welcome' %}">Home</a>
+<br>
+<br>
+<table>
+  <thead>Cycle {{cyc_id}} Contestants</thead>
+  {% for ml in my_list %}
+  <tr>
+    <td>{{ml}}</td>
+  </tr>
+  {% endfor %}
+  </table>
+
+{% endblock %}
