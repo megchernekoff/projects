@@ -7,13 +7,24 @@
 <a href = "{% url 'welcome' %}">Home</a>
 <br>
 <br>
-<table>
-  <thead>Cycle {{cyc_id}} Contestants</thead>
-  {% for ml in my_list %}
-  <tr>
-    <td>{{ml}}</td>
-  </tr>
-  {% endfor %}
-  </table>
+{% if wordbank %}
+  <table>
+    <thead>Cycle {{cyc_id}} Contestants</thead>
+    {% for ml in my_list %}
+    <tr>
+      <td>{{ml}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+  {% else %}
+    <form>
+      {% csrf_token %}
+      {% for ml in my_list %}
+      <textarea rows = 1 columns=20></textarea><br>
+      {% endfor %}
+      <br>
+      <button type="submit">Submit</button>
+      </form>
+{% endif %}
 
 {% endblock %}

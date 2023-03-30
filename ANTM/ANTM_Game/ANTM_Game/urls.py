@@ -20,5 +20,5 @@ from website.views import index, redir_func
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("welcome", index, name='welcome'),
-    path("cycle/<int:id>", redir_func, name='redir')
+    path("cycle/<int:id>/<str:wordbank>", redir_func, name='redir')
 ]
