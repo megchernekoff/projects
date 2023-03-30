@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}You've Selected {% endblock %}
+{% block title %} You've Selected! {% endblock %}
 
 {% block content %}
 
@@ -17,7 +17,7 @@
     {% endfor %}
     </table>
   {% else %}
-    <form>
+    <form name='fill_blank' class='form-creation' method='post'>
       {% csrf_token %}
       {% for ml in my_list %}
       <textarea rows = 1 columns=20></textarea><br>

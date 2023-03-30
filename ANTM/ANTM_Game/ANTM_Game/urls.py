@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from website.views import index, redir_func
+from website.views import index, redir_func, results_func
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("welcome", index, name='welcome'),
-    path("cycle/<int:id>/<str:wordbank>", redir_func, name='redir')
+    path("welcome/", index, name='welcome'),
+    path("cycle/<int:id>/<str:wordbank>/", redir_func, name='redir'),
+    path("results/", results_func, name='results')
 ]
