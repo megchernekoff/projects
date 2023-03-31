@@ -24,19 +24,25 @@ def index(request):
 def redir_func(request, wordbank, id):
     if wordbank == 'False':
         wordbank = ''
-    my_list =  [c.name for c in Contestants.objects.raw("select * from website_contestants where cycle = 'Cycle {}';".format(id))]
-    random.shuffle(my_list)
+    my_list_shuff =  [c.name for c in Contestants.objects.raw("select * from website_contestants where cycle = 'Cycle {}';".format(id))]
+    my_list = my_list_shuff.copy()
+    print(my_list)
+    random.shuffle(my_list_shuff)
+    print(my_list)
+    print('')
 
     if request.method == 'POST':
-        form = request.POST.get('Allison Harvard')
-        print(form)
-        # if form.is_valid():
-        return redirect('/results')
-        # else:
-        #     return render(request, 'website/redir.html', {"cyc_id":id, "wordbank":wordbank, "my_list":my_list})
+        result_list = []
+        for f in my_list:
+            form = request.POST.get(f)
+            result_list.append(form)
+        print(my_list)
+        print(result_list)
+        return redirect('/results', {'result_list':result_list})
+
 
     else:
-        return render(request, 'website/redir.html', {"cyc_id":id, "wordbank":wordbank, "my_list":my_list})
+        return render(request, 'website/redir.html', {"cyc_id":id, "wordbank":wordbank, "my_list":my_list, "my_list_shuff":my_list_shuff})
 
 
 def results_func(request):
