@@ -28,7 +28,8 @@ def redir_func(request, wordbank, id):
     random.shuffle(my_list)
 
     if request.method == 'POST':
-        form = request.POST.get('fill_blank')
+        form = request.POST.get('Allison Harvard')
+        print(form)
         # if form.is_valid():
         return redirect('/results')
         # else:

@@ -17,10 +17,10 @@
     {% endfor %}
     </table>
   {% else %}
-    <form name='fill_blank' class='form-creation' method='post'>
+    <form name = 'fillform' class='form-creation' method='POST'>
       {% csrf_token %}
       {% for ml in my_list %}
-      <textarea rows = 1 columns=20></textarea><br>
+      <input name = '{{ml}}' type='text' maxlength="20"></input><br>
       {% endfor %}
       <br>
       <button type="submit">Submit</button>
