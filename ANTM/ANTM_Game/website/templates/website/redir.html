@@ -17,49 +17,46 @@
     {% endfor %}
     </table>
   {% else %}
-    <form name = 'fillform' class='form-creation' method='POST'>
+    <form id = 'myform' name = 'fillform' class='form-creation' method='POST'>
+      <script>
+        const data = {{my_list | safe}};
+        </script>
+
       {% csrf_token %}
-      {% for ml in my_list %}
-        <input name = '{{ml}}' id = '{{ml}}' type='text' maxlength="20"></input>
-        <ul id='options'></ul>
+      {% for ml, opt in list_opt %}
+        <input name = '{{ml}}' id = '{{ml}}' type='text' maxlength="20" onKeyUp="showResults(this.value)"></input><br>
+        <ul id='{{opt}}'></ul>
         <script>
-          const data = {{my_list | safe}};
-          const autocomplete = document.getElementById('{{ml}}');
-          const resultsHTML = document.getElementById("options");
+          // const autocomplete = document.getElementsById('slot1');
+          // console.log(autocomplete);
+          const res = document.getElementById("{{opt}}");
 
-          autocomplete.oninput = function () {
-            let results = [];
-            const userInput = this.value;
-            resultsHTML.innerHTML = "";
-            if (userInput.length > 0) {
-              results = getResults(userInput);
-              resultsHTML.style.display = "block";
-              for (i = 0; i < results.length; i++) {
-                resultsHTML.innerHTML += "<li>" + results[i] + "</li>";
-          }
-        }
-      };
-
-        function getResults(input) {
-          const results = [];
-          for (i = 0; i < data.length; i++) {
-            if (input === data[i].slice(0, input.length)) {
-              results.push(data[i]);
+          function autocompleteMatch(input) {
+            if (input == '') {
+              return [];
             }
+            var reg = new RegExp(input)
+            return data.filter(function(term) {
+          	  if (term.match(reg)) {
+            	  return term;
+          	  }
+            });
           }
-          return results;
-        };
 
-      resultsHTML.onclick = function (event) {
-        const setValue = event.target.innerText;
-        autocomplete.value = setValue;
-        this.innerHTML = "";
-      };
-    </script>
+          function showResults(val) {
+            res.innerHTML = '';
+            let list = '';
+            let terms = autocompleteMatch(val);
+            for (i=0; i<terms.length; i++) {
+              list += '<li>' + terms[i] + '</li>';
+            }
+            res.innerHTML = '<ul>' + list + '</ul>';
+          }
+        </script>
 
       {% endfor %}
       <button type="submit">Submit</button>
       </form>
-{% endif %}
+    {% endif %}
 
 {% endblock %}
