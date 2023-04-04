@@ -7,3 +7,6 @@ class Contestants(models.Model):
     hometown = models.CharField(max_length=100, default='', null=True)
     cycle = models.IntegerField(default=1, null=True)
     elim = models.CharField(max_length = 5, default='14th', null=True)
+
+class Results(models.Model):
+    entry = models.CharField(max_length=50)

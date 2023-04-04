@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Contestants
+from .models import Contestants, Results
 from .forms import CycleForm
 from django.forms import modelform_factory
 import random
@@ -30,16 +30,17 @@ def redir_func(request, wordbank, id):
     my_list = my_list_shuff.copy()
     options_list = ['option{}'.format(num) for num in range(len(my_list))]
     random.shuffle(my_list_shuff)
-    # my_list, options_list = json.dumps(my_list), json.dumps(options_list)
     opt_list = zip(my_list, options_list)
 
     if request.method == 'POST':
         result_list = []
         for f in my_list:
             form = request.POST.get(f)
-            result_list.append(form)
+            member = Results(entry=form)
+            member.save()
+        print(Results.objects.all().values())
         return redirect('/results', {'my_list': my_list, 'options_list':options_list,
-                                     'opt_list':opt_list, 'result_list':result_list})
+                                     'result_list':result_list})
 
 
     else:
