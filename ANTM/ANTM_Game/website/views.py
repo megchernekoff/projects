@@ -3,6 +3,7 @@ from .models import Contestants
 from .forms import CycleForm
 from django.forms import modelform_factory
 import random
+import json
 
 
 
@@ -29,17 +30,23 @@ def redir_func(request, wordbank, id):
     my_list = my_list_shuff.copy()
     options_list = ['option{}'.format(num) for num in range(len(my_list))]
     random.shuffle(my_list_shuff)
+    # my_list, options_list = json.dumps(my_list), json.dumps(options_list)
+    opt_list = zip(my_list, options_list)
 
     if request.method == 'POST':
         result_list = []
         for f in my_list:
             form = request.POST.get(f)
             result_list.append(form)
-        return redirect('/results', {'my_list': my_list, 'options_list':options_list, 'result_list':result_list})
+        return redirect('/results', {'my_list': my_list, 'options_list':options_list,
+                                     'opt_list':opt_list, 'result_list':result_list})
 
 
     else:
-        return render(request, 'website/redir.html', {"cyc_id":id, "wordbank":wordbank, 'list_opt':zip(my_list,options_list), "my_list":my_list})
+        return render(request, 'website/redir.html', {"cyc_id":id, "wordbank":wordbank,
+                                                      "opt_list": opt_list,
+                                                      'my_list':my_list, "my_list_shuff":my_list_shuff,
+                                                      'options_list':options_list})
 
 
 def results_func(request):

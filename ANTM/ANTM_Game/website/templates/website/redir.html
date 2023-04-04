@@ -20,17 +20,14 @@
     <form id = 'myform' name = 'fillform' class='form-creation' method='POST'>
       <script>
         const data = {{my_list | safe}};
+        const optList = {{options_list | safe}}
         </script>
 
       {% csrf_token %}
-      {% for ml, opt in list_opt %}
-        <input name = '{{ml}}' id = '{{ml}}' type='text' maxlength="20" onKeyUp="showResults(this.value)"></input><br>
+      {% for ml, opt in opt_list %}
+        <input name = '{{ml}}' id = '{{ml}}' type='text' onKeyUp="showResults(this.id, this.value)" maxlength="20"></input><br>
         <ul id='{{opt}}'></ul>
         <script>
-          // const autocomplete = document.getElementsById('slot1');
-          // console.log(autocomplete);
-          const res = document.getElementById("{{opt}}");
-
           function autocompleteMatch(input) {
             if (input == '') {
               return [];
@@ -39,19 +36,27 @@
             return data.filter(function(term) {
           	  if (term.match(reg)) {
             	  return term;
-          	  }
+          	  };
             });
-          }
+          };
 
-          function showResults(val) {
+          function showResults(val1, val2) {
+            var ind = data.indexOf(val1)
+            var res = document.getElementById(optList[ind])
+            var autocomplete = document.getElementById(val1)
             res.innerHTML = '';
             let list = '';
-            let terms = autocompleteMatch(val);
+            let terms = autocompleteMatch(val2);
             for (i=0; i<terms.length; i++) {
               list += '<li>' + terms[i] + '</li>';
             }
             res.innerHTML = '<ul>' + list + '</ul>';
-          }
+                      res.onclick= function (event) {
+                        const setValue = event.target.innerText;
+                        autocomplete.value = setValue;
+                        this.innerHTML = '';
+                      };
+          };
         </script>
 
       {% endfor %}
