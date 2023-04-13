@@ -3,5 +3,26 @@
 {% block title %} Results {% endblock %}
 
 {% block content %}
+<script>
+  console.log({{mylist}};)
+  </script>
 <a href = "{% url 'welcome' %}">Home</a>
+<a href="{{request.META.HTTP_REFERER}}">Try Again</a>
+
+<h1>Results</h1>
+<table border="1">
+  <th style='width:196px'>Entered Contestant</th>
+  <th style='width:196px'>Actual Contestant</th>
+      {% for res, myl in results %}
+      <tr>
+        {% if res.entry != myl %}
+          <td style = 'color:red'>{{res.entry}} </td>
+          <td>{{myl}}</td>
+        {% else %}
+          <td>{{res.entry}} </td>
+          <td>{{myl}} </td>
+        {% endif %}
+      </tr>
+{% endfor %}
+</table>
 {% endblock %}
